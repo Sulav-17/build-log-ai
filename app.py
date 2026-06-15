@@ -1,5 +1,17 @@
 import streamlit as st
 
+from src.github_client import fetch_repo_commits
+
+
+def convert_date_range_to_days(date_range: str) -> int:
+    """
+    Convert the selected date range text into a number of days.
+    """
+    if date_range == "Last 30 days":
+        return 30
+
+    return 7
+
 
 def main():
     st.set_page_config(
@@ -26,21 +38,41 @@ def main():
         options=["Last 7 days", "Last 30 days"],
     )
 
-    generate_button = st.button("Generate Build Log")
+    generate_button = st.button("Fetch GitHub Commits")
 
     if generate_button:
         if not github_username or not repo_name:
             st.warning("Please enter both a GitHub username and repository name.")
             return
 
-        st.success("Inputs received successfully.")
+        days = convert_date_range_to_days(date_range)
 
-        st.write("### Selected Repository")
-        st.write(f"GitHub Username: `{github_username}`")
-        st.write(f"Repository Name: `{repo_name}`")
-        st.write(f"Date Range: `{date_range}`")
+        try:
+            commits = fetch_repo_commits(
+                username=github_username,
+                repo_name=repo_name,
+                days=days,
+            )
 
-        st.info("GitHub API fetching will be added in the next milestone.")
+        except ValueError as error:
+            st.error(str(error))
+            return
+
+        if not commits:
+            st.info("No commits found for this date range.")
+            return
+
+        st.success(f"Found {len(commits)} commits.")
+
+        st.subheader("Recent Commits")
+
+        for commit in commits:
+            with st.container(border=True):
+                st.write(f"**Message:** {commit['message']}")
+                st.write(f"**Author:** {commit['author']}")
+                st.write(f"**Date:** {commit['date']}")
+                st.write(f"**SHA:** `{commit['sha']}`")
+                st.write(f"[View commit]({commit['url']})")
 
 
 if __name__ == "__main__":
