@@ -157,4 +157,52 @@ How to use prompt templates
 How to build with environment variables safely
 How to write basic tests with pytest
 
-'''text
+## Portfolio Description
+
+Built an AI-powered developer activity dashboard that connects to the GitHub API, analyzes recent commit activity, and generates weekly build summaries, LinkedIn posts, short-form video hooks, and Markdown build logs.
+
+The project uses Python, Streamlit, GitHub API, prompt templates, OpenAI API integration, mock AI mode, Markdown export, and pytest-based testing.
+
+## Resume Bullets
+
+- Built an AI-powered developer productivity tool using Python, Streamlit, and the GitHub API to transform commit activity into structured weekly build logs and social content.
+- Implemented a modular architecture with API fetching, commit parsing, prompt templates, AI generation, mock mode, Markdown export, and automated tests.
+- Designed a local development workflow using environment variables, Git/GitHub version control, and pytest to support safer iteration and maintainable code.
+
+## Demo Checklist
+
+Before recording or sharing this project:
+
+- Run the app locally with `streamlit run app.py`
+- Use a public GitHub repository
+- Confirm commits are fetched successfully
+- Confirm activity summary appears
+- Confirm generated content appears
+- Confirm Markdown download works
+- Confirm tests pass with `pytest`
+- Confirm `.env` is not committed
+- Push latest code to GitHub
+
+## LinkedIn Post Draft
+
+I finished the MVP for Build Log AI.
+
+The problem I wanted to solve:
+GitHub commits show what I worked on, but they are not always easy to turn into portfolio updates or public proof-of-work content.
+
+What I built:
+A Streamlit app that connects to the GitHub API, fetches recent commits, groups activity by date, generates developer summaries, creates LinkedIn-style content, suggests short-form video hooks, and exports everything as Markdown.
+
+Tech stack:
+Python, Streamlit, GitHub API, OpenAI API integration, python-dotenv, pytest, and Markdown export.
+
+What I learned:
+- How to structure a Python app professionally
+- How to work with external APIs
+- How to separate UI, data fetching, formatting, AI logic, and exports
+- Why mock mode is useful when working with paid APIs
+
+Next improvement:
+Add GitHub token support and pull request analysis.
+
+#Python #Streamlit #GitHubAPI #AIEngineering #BuildInPublic

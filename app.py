@@ -81,7 +81,12 @@ def main():
 
         except ValueError as error:
             st.error(str(error))
+            st.info(
+                "Check that the repository is public, the username is correct, "
+                "and the repository name matches GitHub exactly."
+            )
             return
+        
 
         if not commits:
             st.info("No commits found for this date range.")
@@ -102,6 +107,10 @@ def main():
                 content_outputs = generate_content_outputs(activity_summary)
             except ValueError as error:
                 st.error(str(error))
+                st.info(
+                    "If you do not want to use paid API calls, set "
+                    "`USE_MOCK_AI=true` in your `.env` file."
+                )
                 return
 
         tab_1, tab_2, tab_3 = st.tabs(
@@ -137,7 +146,7 @@ def main():
                 repo_name=repo_name,
         )
         st.subheader("4. Export")
-        
+
         st.download_button(
                 label="Download Build Log as Markdown",
                 data=markdown_export,
