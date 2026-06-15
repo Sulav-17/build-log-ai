@@ -1,5 +1,6 @@
 import streamlit as st
 
+from src.export import create_export_file_name, create_markdown_export
 from src.github_client import fetch_repo_commits
 from src.formatter import create_activity_summary
 from src.summarizer import generate_content_outputs
@@ -99,6 +100,29 @@ def main():
         with tab_3:
             st.markdown(content_outputs["short_hooks"])
             
+        markdown_export = create_markdown_export(
+                github_username=github_username,
+                repo_name=repo_name,
+                date_range=date_range,
+                activity_summary=activity_summary,
+                weekly_summary=content_outputs["weekly_summary"],
+                linkedin_post=content_outputs["linkedin_post"],
+                short_hooks=content_outputs["short_hooks"],
+                commits=commits,
+        )
+
+        export_file_name = create_export_file_name(
+                github_username=github_username,
+                repo_name=repo_name,
+        )
+
+        st.download_button(
+                label="Download Build Log as Markdown",
+                data=markdown_export,
+                file_name=export_file_name,
+                mime="text/markdown",
+        )    
+
         with st.expander("View raw commits"):
             for commit in commits:
                 with st.container(border=True):
