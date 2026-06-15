@@ -1,6 +1,8 @@
 import streamlit as st
 
 from src.github_client import fetch_repo_commits
+from src.formatter import create_activity_summary
+
 
 
 def convert_date_range_to_days(date_range: str) -> int:
@@ -64,15 +66,20 @@ def main():
 
         st.success(f"Found {len(commits)} commits.")
 
-        st.subheader("Recent Commits")
+        activity_summary = create_activity_summary(commits)
 
-        for commit in commits:
-            with st.container(border=True):
-                st.write(f"**Message:** {commit['message']}")
-                st.write(f"**Author:** {commit['author']}")
-                st.write(f"**Date:** {commit['date']}")
-                st.write(f"**SHA:** `{commit['sha']}`")
-                st.write(f"[View commit]({commit['url']})")
+
+        st.subheader("Activity Summary")
+        st.markdown(activity_summary)
+
+        with st.expander("View raw commits"):
+            for commit in commits:
+                with st.container(border=True):
+                    st.write(f"**Message:** {commit['message']}")
+                    st.write(f"**Author:** {commit['author']}")
+                    st.write(f"**Date:** {commit['date']}")
+                    st.write(f"**SHA:** `{commit['sha']}`")
+                    st.write(f"[View commit]({commit['url']})")
 
 
 if __name__ == "__main__":
