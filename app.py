@@ -2,6 +2,7 @@ import streamlit as st
 
 from src.github_client import fetch_repo_commits
 from src.formatter import create_activity_summary
+from src.summarizer import generate_content_outputs
 
 
 
@@ -72,6 +73,32 @@ def main():
         st.subheader("Activity Summary")
         st.markdown(activity_summary)
 
+        st.subheader("AI Generated Content")
+
+        with st.spinner("Generating AI summaries..."):
+            try:
+                content_outputs = generate_content_outputs(activity_summary)
+            except ValueError as error:
+                st.error(str(error))
+                return
+
+        tab_1, tab_2, tab_3 = st.tabs(
+            ["Weekly Summary", "LinkedIn Post", "Short Hooks"]
+        )
+
+        with tab_1:
+            st.markdown(content_outputs["weekly_summary"])
+
+        with tab_2:
+            st.text_area(
+                "LinkedIn Post",
+                value=content_outputs["linkedin_post"],
+                height=300,
+            )
+
+        with tab_3:
+            st.markdown(content_outputs["short_hooks"])
+            
         with st.expander("View raw commits"):
             for commit in commits:
                 with st.container(border=True):
