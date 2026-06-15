@@ -23,16 +23,35 @@ def main():
         page_icon="🛠️",
         layout="wide",
     )
+    with st.sidebar:
+        st.header("Build Log AI")
+        st.write("AI-powered GitHub activity summarizer.")
 
+        st.subheader("Current Features")
+        st.write("- Fetch GitHub commits")
+        st.write("- Group activity by date")
+        st.write("- Generate AI-style summaries")
+        st.write("- Export Markdown build logs")
+
+        st.subheader("Mode")
+        st.write(
+            "Mock AI mode can be enabled in `.env` with `USE_MOCK_AI=true` "
+            "to avoid paid API calls during development."
+        )
     st.title("Build Log AI")
     st.write(
-        "Turn GitHub commit activity into weekly build logs, LinkedIn posts, "
-        "YouTube updates, TikTok hooks, and portfolio notes."
+        "Build Log AI turns GitHub commit activity into weekly developer summaries, "
+        "LinkedIn posts, short-form video hooks, and Markdown build logs."
+    )
+
+    st.info(
+        "Use this tool to document your projects, create proof-of-work content, "
+        "and keep a clean record of what you built."
     )
 
     st.divider()
 
-    st.subheader("Repository Input")
+    st.subheader("1. Choose a GitHub Repository")
 
     github_username = st.text_input("GitHub Username")
     repo_name = st.text_input("Repository Name")
@@ -41,7 +60,9 @@ def main():
         "Select activity range",
         options=["Last 7 days", "Last 30 days"],
     )
-
+    st.caption(
+        "Tip: Use a public repository first. Private repositories will need GitHub token support later."
+    )
     generate_button = st.button("Fetch GitHub Commits")
 
     if generate_button:
@@ -71,10 +92,10 @@ def main():
         activity_summary = create_activity_summary(commits)
 
 
-        st.subheader("Activity Summary")
+        st.subheader("2. Activity Summary")
         st.markdown(activity_summary)
 
-        st.subheader("AI Generated Content")
+        st.subheader("3. AI Generated Content")
 
         with st.spinner("Generating AI summaries..."):
             try:
@@ -115,7 +136,8 @@ def main():
                 github_username=github_username,
                 repo_name=repo_name,
         )
-
+        st.subheader("4. Export")
+        
         st.download_button(
                 label="Download Build Log as Markdown",
                 data=markdown_export,
